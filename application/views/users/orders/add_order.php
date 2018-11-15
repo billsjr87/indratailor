@@ -1,12 +1,22 @@
 <div class="col-9" style="margin-top:40px;">
   <div class="container">
-    <div class="card">
+    <div class="card" style="margin-bottom:50px;">
 
       <!-- card header start -->
       <div class="card-header">
-        <?php echo $stor_name; ?> <br/>
-        <?php echo $stor_addr; ?> <br />
-        <?php echo $stor_phnn; ?>
+        <h1 class="text-center">
+          <?php echo $stor_name; ?>
+        </h1>
+        <h6 class="text-center">
+          <i>
+            <?php echo $stor_addr; ?>
+          </i>
+        </h6>
+        <h6 class="text-center">
+          <b style="font-size:0.8em;">
+            <?php echo $stor_phnn; ?>
+          </b>
+        </h6>
       </div>
       <!-- card header end -->
 
@@ -17,14 +27,16 @@
         <div class="form-group">
           <form name="form_addn_ordr" id="form_addn_ordr">
 
+            <input type="hidden" name="stor_indx" value="<?php echo $stor_indx; ?>" required>
+
             <div class="row">
               <div class="col-3">
                 <label for="ordr_nmbr" style="font-size:0.8em;">Order Number</label>
-                <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo "ordr_nmbr+1"; ?>" readonly>
+                <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo $ordr_nmbr+1; ?>" readonly required>
               </div>
               <div class="col offset-3">
                 <label for="ordr_date" style="font-size:0.8em;">Order Date</label>
-                <input class="form-control" type="date" name="ordr_date">
+                <input class="form-control" type="date" name="ordr_date" required>
                 <!-- date now -->
               </div>
               <div class="col">
@@ -52,57 +64,61 @@
               </div>
             </div>
 
+            <input type="hidden" name="cust_indx" id="cust_indx" required>
+
             <div class="row">
               <div class="col-1">
                 <label for="cust_ordr" style="font-size:0.8em;">Customer Orders</label>
               </div>
               <div class="col">
                 <div class="table-responsive">
-                  <table class="table border-0" id="item_orders">
+                  <table class="table border-0" id="item_orders" style="margin-bottom:5px;">
                     <tr>
-                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly /> </td>
+                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly required /> </td>
                       <td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-primary border-0" type="button" name="addn_item" id="addn_item"><i class="fas fa-plus-circle fa-lg"></i></button></td>
                     </tr>
                   </table>
                 </div>
               </div>
             </div>
+            <?php // TODO: add price and qty for each item ?>
 
             <div class="row">
               <div class="col-1">
                 <label for="ordr_detl" style="font-size:0.8em;">Other Details</label>
               </div>
               <div class="col">
-                <input class="form-control" type="text" name="ordr_detl" maxlength="256" placeholder="Other details">
+                <textarea class="form-control" name="ordr_detl" rows="3" cols="80" placeholder="Other details"></textarea>
+                <!-- <input class="form-control" type="text" name="ordr_detl" maxlength="256" placeholder="Other details"> -->
               </div>
             </div>
 
             <hr/>
 
-            <div class="row">
+            <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
                 <label for="ordr_fees" style="font-size:0.8em;">Total Fees</label>
               </div>
               <div class="col">
-                <input class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly />
+                <input class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly required />
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
-                <label for="ordr_dopy" style="font-size:0.8em;">Down Payment</label>
+                <label for="ordr_dopy" style="font-size:0.8em;">Payment</label>
               </div>
               <div class="col">
                 <input class="form-control" type="number" name="ordr_dopy" min="0" step="1000" value="0" />
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
                 <label for="ordr_accr" style="font-size:0.8em;">Acc. Recieveable</label>
               </div>
               <div class="col">
-                <input class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" value="0" readonly />
+                <input class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" value="0" readonly required />
               </div>
             </div>
 
@@ -116,7 +132,7 @@
                 <button class="btn btn-success w-100" type="button" name="save" id="save" value="submit">SAVE</button>
               </div>
               <div class="col-2">
-                <button class="btn btn-warning w-100" type="button" name="print" id="print" value="submit">SAVE & PRINT</button>
+                <button class="btn btn-warning w-100" type="button" name="prnt" id="prnt" value="submit">SAVE & PRINT</button>
               </div>
             </div>
 
@@ -134,6 +150,7 @@
 
 <script>
   $(document).ready(function(){
+
     var rowItemCount = 1;
     $('#addn_item').click(function(){
       rowItemCount++;
@@ -144,32 +161,39 @@
       var rowId = $(this).attr("id");
       $('#row'+rowId+'').remove();
     });
+
+    function chck_inpt(){
+      return true;
+    }
+    function ordr_save(){
+      $.ajax({
+        // TODO: change url later
+        url:"<?php echo base_url('order/ordr_save'); ?>",
+        method:"POST",
+        data:$('#form_addn_ordr').serialize(),
+        success:function(data)
+        {
+          alert(data);
+          $('#form_addn_ordr')[0].reset();
+        }
+      });
+    }
+    function ordr_prnt(){
+      // TODO: add print function
+    }
+
     $('#save').click(function(){
-      $.ajax({
-        // TODO: change url later
-        url:"save.php",
-        method:"POST",
-        data:$('#form_addn_ordr').serialize(),
-        success:function(data)
-        {
-          alert(data);
-          $('#form_addn_ordr')[0].reset();
-        }
-      });
+      if (chck_inpt()) {
+        ordr_save();
+      }
     });
-    $('#print').click(function(){
-      $.ajax({
-        // TODO: change url later
-        url:"save.php",
-        method:"POST",
-        data:$('#form_addn_ordr').serialize(),
-        success:function(data)
-        {
-          alert(data);
-          $('#form_addn_ordr')[0].reset();
-          // TODO: add print function
-        }
-      });
+
+    $('#prnt').click(function(){
+      if (chck_inpt()) {
+        ordr_save();
+        ordr_prnt();
+      }
     });
+
   });
 </script>
