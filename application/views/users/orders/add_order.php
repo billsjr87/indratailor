@@ -5,16 +5,16 @@
       <!-- card header start -->
       <div class="card-header">
         <h1 class="text-center">
-          <?php echo $stor_name; ?>
+          <?php echo $stor_prfl['stor_name']; ?>
         </h1>
         <h6 class="text-center">
           <i>
-            <?php echo $stor_addr; ?>
+            <?php echo $stor_prfl['stor_addr']; ?>
           </i>
         </h6>
         <h6 class="text-center">
           <b style="font-size:0.8em;">
-            <?php echo $stor_phnn; ?>
+            <?php echo $stor_prfl['stor_phnn']; ?>
           </b>
         </h6>
       </div>
@@ -55,10 +55,10 @@
                 <input class="form-control" type="text" name="cust_name" id="cust_name" maxlength="32" placeholder="Customer Name" readonly>
               </div>
               <div class="col-2" style="padding:0px 0px 0px 5px; display:inline-block;">
-                <button class="btn btn-outline-primary border-0" type="button" name="srch_cust" data-toggle="modal" data-target="srch_cust_modl">
+                <button class="btn btn-outline-primary border-0" type="button" name="srch_cust" data-toggle="modal" data-target="#srch_cust_modl">
                   <i class="fas fa-search fa-lg"></i>
                 </button>
-                <button class="btn btn-outline-primary border-0" type="button" name="addn_cust" data-toggle="modal" data-target="addn_cust_modl">
+                <button class="btn btn-outline-primary border-0" type="button" name="addn_cust" data-toggle="modal" data-target="#addn_cust_modl">
                   <i class="fas fa-plus-circle fa-lg"></i>
                 </button>
               </div>
@@ -88,7 +88,7 @@
                 <label for="ordr_detl" style="font-size:0.8em;">Other Details</label>
               </div>
               <div class="col">
-                <textarea class="form-control" name="ordr_detl" rows="3" cols="80" placeholder="Other details"></textarea>
+                <textarea class="form-control" name="ordr_detl" rows="3" cols="80" placeholder="Other details" style="resize:none;"></textarea>
                 <!-- <input class="form-control" type="text" name="ordr_detl" maxlength="256" placeholder="Other details"> -->
               </div>
             </div>

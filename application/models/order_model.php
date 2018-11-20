@@ -15,12 +15,16 @@ class Order_model extends CI_Model {
     return $this->db->get('tb_orders');
   }
 
-  public function last_order () {
+  public function last_order_number () {
     $this->db->select('ordr_nmbr');
     $this->db->from('tb_orders');
     $this->db->order_by('ordr_nmbr','desc')->limit(1);
     $query = $this->db->get();
-    return $query->result();
+    $result = 0;
+    foreach ($query->result() as $row) {
+      $result = $row->ordr_nmbr;
+    }
+    return $result;
   }
 
 }

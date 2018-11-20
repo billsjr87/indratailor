@@ -10,26 +10,20 @@ class Order extends CI_Controller {
 		$this->load->model('pymt_model','m_pymt');
 		$this->load->model('prfl_model','m_prfl');
 
-		$this->stor_indx = 1;
-		$stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
-		$this->stor_name = $stor_prfl[0]->stor_name;
-		$this->stor_addr = $stor_prfl[0]->stor_addr;
-		$this->stor_phnn = $stor_prfl[0]->stor_phnn;
-		$this->ordr_nmbr = 0;
+		$this->stor_indx = 1; // TODO: replace with login credential
+		$this->stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
+
 	}
 
 	public function index($message = NULL)
 	{
-		$orders = array(
-			'order' => $this->m_order->read_order()
-		);
 		$data = array(
 			'title' => 'Orders',
 			'message' => $message
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');
-		$this->load->view('users/order', $orders);
+		$this->load->view('users/order');
 		$this->load->view('templates/footer');
 	}
 
@@ -38,13 +32,12 @@ class Order extends CI_Controller {
 		$data = array( // TODO: read profile data
 			'title' => 'Add Order',
 			'stor_indx' => $this->stor_indx,
-			'stor_name' => $this->stor_name,
-			'stor_addr' => $this->stor_addr,
-			'stor_phnn' => $this->stor_phnn,
-			'ordr_nmbr' => $this->ordr_nmbr
+			'stor_prfl' => $this->stor_prfl,
+			'ordr_nmbr' => $this->m_order->last_order_number()
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');
+		$this->load->view('users/modals/modals');
 		$this->load->view('users/orders/add_order');
 		$this->load->view('templates/footer');
 	}
