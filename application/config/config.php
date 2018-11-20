@@ -23,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+$config['time_reference'] = 'Asia/Jakarta';
 $config['base_url'] = 'https://localhost/projects/indratailor/';
 
 /*
