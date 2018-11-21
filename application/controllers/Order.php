@@ -9,10 +9,10 @@ class Order extends CI_Controller {
 		$this->load->model('accr_model','m_ar');
 		$this->load->model('pymt_model','m_pymt');
 		$this->load->model('prfl_model','m_prfl');
+		$this->load->model('cust_model','m_cust');
 
 		$this->stor_indx = 1; // TODO: replace with login credential
 		$this->stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
-
 	}
 
 	public function index($message = NULL)
@@ -44,6 +44,10 @@ class Order extends CI_Controller {
 
 	public function ordr_save()
 	{
+		$result['msg'] = "";
+		$result['url'] = "";
+
+		// get inupt data
 		$stor_indx = $this->input->post("stor_indx");
 		$ordr_nmbr = $this->input->post("ordr_nmbr");
 		$ordr_date = $this->input->post("ordr_date");
@@ -73,14 +77,43 @@ class Order extends CI_Controller {
 				$this->m_pymt->add_pymt($pymt_data);
 			}
 			if ($accr_nmbr != 0 and $detl_rslt) {
-				$msg = "Order saved";
-				$this->index($msg);
+				$result['msg'] = "Order Saved";
+				$result['url'] = "order";
 			} else {
-				echo "failed to insert detail order and/or account receiveable.";
+				$result['msg'] = "Failed to insert detail order and/or account receiveable.";
+				$result['url'] = "";
 			}
 		} else {
-			echo "failed to insert order data";
+			$result['msg'] = "Failed to insert order data.";
+			$result['url'] = "";
 		}
+		echo json_encode($result);
+	}
+
+	public function cust_save() {
+		$result['msg'] = "";
+		$result['url'] = "";
+
+		$cust_titl = $this->input->post("cust_titl");
+		$cust_name = $this->input->post("cust_name");
+		$cust_phnn = $this->input->post("cust_phnn");
+		$cust_addr = $this->input->post("cust_addr");
+		$cust_rgdt = date('Y-m-d H:i:s');
+
+		$cust_data = array(
+			'cust_titl' => $cust_titl,
+			'cust_name' => $cust_name,
+			'cust_phnn' => $cust_phnn,
+			'cust_addr' => $cust_addr,
+			'cust_rgdt' => $cust_rgdt
+		);
+
+		if (!$this->m_cust->add_customer($cust_data)) {
+			$result['msg'] = "failed";
+		} else {
+			$result['msg'] = "success";
+		}
+		echo json_encode($result);
 	}
 
 }

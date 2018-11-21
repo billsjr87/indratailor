@@ -1,5 +1,5 @@
 <div class="col-9" style="margin-top:40px;">
-  <div class="container">
+  <div class="container" id="ordr_page">
     <div class="card" style="margin-bottom:50px;">
 
       <!-- card header start -->
@@ -152,32 +152,41 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
+    
     $('#addn_item').click(function(){
+      // TODO: add modal select items
       rowItemCount++;
       $('#item_orders').append('<tr id="row'+rowItemCount+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly /> </td>'+
         '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+rowItemCount+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
     });
+
     $(document).on('click', '.btn_remove', function(){
       var rowId = $(this).attr("id");
       $('#row'+rowId+'').remove();
     });
 
     function chck_inpt(){
+      // TODO: add input validation
       return true;
     }
+
     function ordr_save(){
       $.ajax({
-        // TODO: change url later
         url:"<?php echo base_url('order/ordr_save'); ?>",
         method:"POST",
         data:$('#form_addn_ordr').serialize(),
         success:function(data)
         {
-          alert(data);
-          $('#form_addn_ordr')[0].reset();
+          if (data.url != "") {
+            alert(data.msg);
+            window.location.href = "<?php echo base_url(); ?>" + data.url + "";
+          } else {
+            alert(data.msg);
+          }
         }
       });
     }
+
     function ordr_prnt(){
       // TODO: add print function
     }

@@ -1,3 +1,4 @@
+<!-- add customer modal start -->
 <div class="modal fade" id="addn_cust_modl" tabindex="-1" role="dialog" aria-labelledby="addn_cust" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -50,17 +51,55 @@
             </div>
           </div>
 
+          <hr />
+
+          <div class="row">
+            <div class="col-3">
+              <button class="btn btn-danger w-100" type="button" name="clos_cust" id="clos_cust" value="reset" data-dismiss="modal">CANCEL</button>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-success w-100" type="button" name="save_cust" id="save_cust" value="submit">SAVE</button>
+            </div>
+          </div>
+
         </form>
 
-      </div>
-      <div class="modal-footer bg-dark">
-        <div class="col-3">
-          <button class="btn btn-danger w-100" type="button" name="close" value="reset" data-dismiss="modal">CANCEL</button>
-        </div>
-        <div class="col-3">
-          <button class="btn btn-success w-100" type="button" name="save_cust" id="save_cust" value="submit">SAVE</button>
-        </div>
       </div>
     </div>
   </div>
 </div>
+<!-- add customer modal end -->
+
+<script>
+  $(document).ready(function(){
+
+    function chck_cust () {
+        return TRUE;
+        // TODO: add input cust validation
+    }
+
+    function cust_save () {
+      $.ajax({
+        url:"<?php echo base_url('order/cust_save'); ?>",
+        method:"POST",
+        data:$('#form_addn_cust').serialize(),
+        success:function(data)
+        {
+          if (data.msg == "Success") {
+            alert('Data saved.');
+            $('#clos_cust').click();
+          } else {
+            alert('Phone number exist.');
+          }
+        }
+      });
+    }
+
+    $('#save_cust').click(function(){
+      if (chck_cust()) {
+        cust_save();
+      }
+    });
+
+  });
+</script>
