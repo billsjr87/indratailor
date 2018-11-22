@@ -152,6 +152,7 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
+    // var items = []
 
     $('#addn_item').click(function(){
       $('#addn_item_modl').modal('show');

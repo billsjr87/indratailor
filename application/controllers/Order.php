@@ -10,6 +10,7 @@ class Order extends CI_Controller {
 		$this->load->model('pymt_model','m_pymt');
 		$this->load->model('prfl_model','m_prfl');
 		$this->load->model('cust_model','m_cust');
+		$this->load->model('item_model','m_item');
 
 		$this->stor_indx = 1; // TODO: replace with login credential
 		$this->stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
@@ -33,7 +34,9 @@ class Order extends CI_Controller {
 			'title' => 'Add Order',
 			'stor_indx' => $this->stor_indx,
 			'stor_prfl' => $this->stor_prfl,
-			'ordr_nmbr' => $this->m_order->last_order_number()
+			'ordr_nmbr' => $this->m_order->last_order_number(),
+			'item_cate' => $this->m_item->read_item_category(),
+			'category' =>$this->m_item->read_category()
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');

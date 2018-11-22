@@ -124,7 +124,7 @@
           </div>
 
           <div class="row">
-            <div class="col-1">
+            <div class="col-2">
               <label for="item_pric" style="font-size:0.8em;">Item Price</label>
             </div>
             <div class="col-9">
@@ -133,7 +133,7 @@
           </div>
 
           <div class="row">
-            <div class="col-1">
+            <div class="col-2">
               <label for="item_nett" style="font-size:0.8em;">Nett Price</label>
             </div>
             <div class="col-9">
@@ -175,7 +175,6 @@
         rules: {
           cust_name:{
             required:true,
-            minlength:1,
             maxlength:64
           },
           cust_phnn:{
@@ -187,7 +186,6 @@
         messages: {
           cust_name: {
             required:"Name is required",
-            minlength:"Name min 1 chars",
             maxlength:"Name max 64 chars"
           },
           cust_phnn:{
@@ -230,7 +228,16 @@
 
     $('#save_item').click(function(){
       var price = $('#item_pric').val();
+      if (price != 0) {
+        item_save();
+      } else {
+        // TODO: need price
+      }
     });
+
+    function item_save(){
+      // index,type,qty,price
+    }
 
   });
 </script>
