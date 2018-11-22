@@ -108,11 +108,8 @@ class Order extends CI_Controller {
 			'cust_rgdt' => $cust_rgdt
 		);
 
-		if (!$this->m_cust->add_customer($cust_data)) {
-			$result['msg'] = "failed";
-		} else {
-			$result['msg'] = "success";
-		}
+		$result['msg'] = $this->m_cust->add_customer($cust_data);
+
 		echo json_encode($result);
 	}
 

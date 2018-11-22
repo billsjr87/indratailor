@@ -152,12 +152,14 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
-    
+
     $('#addn_item').click(function(){
-      // TODO: add modal select items
-      rowItemCount++;
-      $('#item_orders').append('<tr id="row'+rowItemCount+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly /> </td>'+
-        '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+rowItemCount+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
+      $('#addn_item_modl').modal('show');
+      $('#addn_item_modl').on('hidden.bs.modal', function (e) {
+        rowItemCount++;
+        $('#item_orders').append('<tr id="row'+rowItemCount+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly /> </td>'+
+          '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+rowItemCount+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
+      })
     });
 
     $(document).on('click', '.btn_remove', function(){

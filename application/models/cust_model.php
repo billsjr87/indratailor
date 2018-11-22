@@ -7,11 +7,13 @@ class Cust_model extends CI_Model {
   }
 
   public function add_customer ($cust_data) {
-    if ($this->db->select('cust_indx')->from('tb_custs')->where('cust_phnn',$cust_data['cust_phnn'])->num_rows() > 0) {
-      return FALSE;
+    $this->db->select('cust_indx')->from('tb_custs')->where('cust_phnn',$cust_data['cust_phnn']);
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+      return false;
     } else {
       $this->db->insert('tb_custs', $cust_data);
-      return $this->db->insert_id();
+      return (int) $this->db->insert_id();
     }
   }
 
