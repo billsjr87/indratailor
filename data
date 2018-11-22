@@ -1,0 +1,60 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 22, 2018 at 09:17 AM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 5.6.38
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `db_indratailor`
+--
+DROP DATABASE IF EXISTS `db_indratailor`;
+CREATE DATABASE IF NOT EXISTS `db_indratailor` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `db_indratailor`;
+
+--
+-- Dumping data for table `tb_custs`
+--
+
+INSERT INTO `tb_custs` (`cust_indx`, `cust_titl`, `cust_name`, `cust_phnn`, `cust_addr`, `cust_rgdt`) VALUES
+(1, 1, 'Billy', '0721774050', '', '2018-11-21 16:00:42'),
+(2, 1, 'Billy', '085283184888', '', '2018-11-21 16:01:04'),
+(3, 1, 'Billy', '085283184', '', '2018-11-21 16:04:16'),
+(4, 1, 'an', '12345', '', '2018-11-21 16:05:57'),
+(5, 1, 'test', '09876', '', '2018-11-21 16:06:41'),
+(6, 1, 'Billy', '098765', '', '2018-11-22 03:52:47'),
+(7, 1, 'Billy', '0864', '', '2018-11-22 03:54:42'),
+(8, 1, 'Billy', '098763', '', '2018-11-22 04:05:29'),
+(9, 1, 'Billy', '13579', '', '2018-11-22 06:19:23'),
+(10, 1, 'Bimo', '012345', '', '2018-11-22 06:22:35'),
+(11, 1, '', '', '', '2018-11-22 07:51:48'),
+(12, 1, 'RIki', '098765432', '', '2018-11-22 08:22:12'),
+(13, 1, 'Tester', '1325367', '', '2018-11-22 08:24:02'),
+(14, 1, 'mnbmn', '34567898765', '', '2018-11-22 08:26:50'),
+(15, 1, 'lkj', '456787654323', '', '2018-11-22 08:28:40'),
+(16, 1, 'lkjhgf', '45676543', '', '2018-11-22 08:29:15');
+
+--
+-- Dumping data for table `tb_profiles`
+--
+
+INSERT INTO `tb_profiles` (`stor_indx`, `stor_name`, `stor_addr`, `stor_phnn`) VALUES
+(1, 'Indra Tailor', 'Jl. alamat no. 00 Kota Bandar Lampung', '0721-000000');
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
