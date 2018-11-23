@@ -93,10 +93,8 @@
               <label for="item_ctgy" style="font-size:0.8em;">Item Category</label>
             </div>
             <div class="col-9">
-              <select class="form-control" name="item_ctgy" required>
-                <?php // TODO: add option from item category ?>
-                <option value="1">Mr.</option>
-                <option value="2">Ms.</option>
+              <select class="form-control" name="item_ctgy" id="item_ctgy" required>
+                <option value="" disabled selected>Please Select Category</option>
               </select>
             </div>
           </div>
@@ -106,10 +104,8 @@
               <label for="item_type" style="font-size:0.8em;">Item Type</label>
             </div>
             <div class="col-9">
-              <select class="form-control" name="item_type" required>
-                <?php // TODO: add option from item category ?>
-                <option value="1">Mr.</option>
-                <option value="2">Ms.</option>
+              <select class="form-control" name="item_type" id="item_type" required>
+                <option value="" disabled selected>Select Category First</option>
               </select>
             </div>
           </div>
@@ -119,7 +115,7 @@
               <label for="item_qtty" style="font-size:0.8em;">Item Quantity</label>
             </div>
             <div class="col-3">
-              <input class="form-control" type="number" name="item_qtty" value="1" required />
+              <input class="form-control" type="number" name="item_qtty" id="item_qtty" value="1" required />
             </div>
           </div>
 
@@ -128,7 +124,7 @@
               <label for="item_pric" style="font-size:0.8em;">Item Price</label>
             </div>
             <div class="col-9">
-              <input class="form-control" type="number" name="item_pric" value="0" required />
+              <input class="form-control" type="number" name="item_pric" id="item_pric" value="0" required />
             </div>
           </div>
 
@@ -164,6 +160,25 @@
 
 <script>
   $(document).ready(function(){
+
+    var categories = <?php echo json_encode($category); ?>;
+    var itemCategory = <?php echo json_encode($item_cate); ?>;
+    var nunmOfItems = 0;
+
+    for (var i = 0; i < categories.length; i++) {
+      $('#item_ctgy').append('<option value="'+categories[i].cate_indx+'">'+categories[i].cate_name+'</option>');
+    }
+
+    $('#item_ctgy').on('change',function(){
+      var selectedCategory = this.value;
+      $('#item_type').empty();
+      $('#item_type').append('<option value="" disabled selected>Please Select Category</option>');
+      for (var i = 0; i < itemCategory.length; i++) {
+        if (itemCategory[i].cate_indx == selectedCategory) {
+          $('#item_type').append('<option value="'+itemCategory[i].item_cate_indx+'">'+itemCategory[i].item_name+'</option>');
+        }
+      }
+    });
 
     function chck_cust () {
       var form_addn_cust = $("#form_addn_cust");
@@ -236,6 +251,10 @@
     });
 
     function item_save(){
+      nunmOfItems++;
+      var price = $('#item_pric').val();
+      var quantity = $('#item_qtty').val();
+      var type = $('#item_type').val();
       // index,type,qty,price
     }
 

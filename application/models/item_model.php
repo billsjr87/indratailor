@@ -7,11 +7,12 @@ class Item_model extends CI_Model {
   }
 
   public function read_item_category (){
-    $this->db->select('tb_item_cate.item_cate_indx','tb_item.*','tb_cate.*');
+    $this->db->select('tb_item_cate.item_cate_indx, tb_items.*, tb_cate.*');
     $this->db->from('tb_item_cate');
-    $this->db->join('tb_item','tb_item_cate.item_indx = tb_item.item_indx','inner');
+    $this->db->join('tb_items','tb_item_cate.item_indx = tb_items.item_indx','inner');
     $this->db->join('tb_cate','tb_item_cate.cate_indx = tb_cate.cate_indx','inner');
     $query = $this->db->get();
+    // echo $this->db->last_query();
     $result = array();
     foreach ($query->result() as $row) {
       $item = array(
