@@ -133,7 +133,7 @@
               <label for="item_nett" style="font-size:0.8em;">Nett Price</label>
             </div>
             <div class="col-9">
-              <input class="form-control" type="number" name="item_nett" value="0" required readonly />
+              <input class="form-control" type="number" name="item_nett" id="item_nett" value="0" required readonly />
             </div>
           </div>
 
@@ -143,10 +143,10 @@
             <div class="col-6">
             </div>
             <div class="col-3">
-              <button class="btn btn-danger w-100" type="button" name="clos_cust" id="clos_item" value="reset" data-dismiss="modal">CANCEL</button>
+              <button class="btn btn-danger w-100" type="button" name="clos_item" id="clos_item" value="reset" data-dismiss="modal">CANCEL</button>
             </div>
             <div class="col-3">
-              <button class="btn btn-success w-100" type="button" name="save_cust" id="save_item" value="submit">ADD</button>
+              <button class="btn btn-success w-100" type="button" name="save_item" id="save_item" value="submit">ADD</button>
             </div>
           </div>
 
@@ -163,7 +163,8 @@
 
     var categories = <?php echo json_encode($category); ?>;
     var itemCategory = <?php echo json_encode($item_cate); ?>;
-    var nunmOfItems = 0;
+    var numOfItems = 0;
+    var itemInCart = [];
 
     for (var i = 0; i < categories.length; i++) {
       $('#item_ctgy').append('<option value="'+categories[i].cate_indx+'">'+categories[i].cate_name+'</option>');
@@ -179,6 +180,20 @@
         }
       }
     });
+
+    $('#item_pric').on('focusout', function(){
+      $('#item_nett').val(calculateNettPrice());
+    });
+
+    $('#item_qtty').on('focusout', function(){
+      $('#item_nett').val(calculateNettPrice());
+    });
+
+    function calculateNettPrice(){
+      var price = $('#item_pric').val();
+      var quantity = $('#item_qtty').val();
+      return quantity * price;
+    }
 
     function chck_cust () {
       var form_addn_cust = $("#form_addn_cust");
@@ -251,11 +266,28 @@
     });
 
     function item_save(){
-      nunmOfItems++;
       var price = $('#item_pric').val();
       var quantity = $('#item_qtty').val();
       var type = $('#item_type').val();
-      // index,type,qty,price
+      var typeName = $('#item_type option:selected').text();
+      var cate = $('#item_ctgy').val();
+      var cateName = $('#item_ctgy option:selected').text();
+
+      var itemToPut = quantity+';'+type+';'+price;
+      var itemToSHow = quantity+'x '+cateName+' : '+typeName;
+      itemInCart.push(itemToPut);
+
+      numOfItems++;
+      // $('#order_container').empty();
+      for (var i = 0; i < itemInCart.length; i++) {
+        if ((numOfItems-1) == i) {
+          $('#order_container').append('<input type="hidden" name="ordr_item[]" id="orderIndex_'+numOfItems+'" class="form-control" value="'+itemInCart[i]+'" />');
+          $('#order_show').append('<tr id="row'+numOfItems+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" value="'+itemToSHow+'" readonly /> </td>'+
+          '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+numOfItems+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
+        }
+      }
+
+      $('#clos_item').click();
     }
 
   });

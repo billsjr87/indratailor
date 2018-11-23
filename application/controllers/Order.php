@@ -69,7 +69,19 @@ class Order extends CI_Controller {
 			'ordr_detl' => $ordr_detl,'cust_indx' => $cust_indx);
 		// insert order
 		if ($this->m_order->add_order($ordr_data)) {
-			// TODO: add order details
+			$items = array();
+			foreach ($ordr_item as $item) {
+				$qty = explode(";",$item)[0];
+				$tpy = explode(";",$item)[1];
+				$prc = explode(";",$item)[2];
+				array_push($items, array(
+					'ordr_nmbr' => $ordr_nmbr,
+					'item_qtty' => $qty,
+					'caty_indx' => $tpy,
+					'item_pric' => $prc
+				));
+			}
+			// $this->m_odet->add_order_detail($items); using insert_batch();
 			$detl_rslt = TRUE;
 			// insert accr
 			$accr_data = array ('ordr_nmbr' => $ordr_nmbr,'accr_amnt' => $ordr_fees,'accr_stat' => $accr_stat);

@@ -74,14 +74,20 @@
                 <div class="table-responsive">
                   <table class="table border-0" id="item_orders" style="margin-bottom:5px;">
                     <tr>
-                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly required /> </td>
+                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" readonly required /> </td>
                       <td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-primary border-0" type="button" name="addn_item" id="addn_item"><i class="fas fa-plus-circle fa-lg"></i></button></td>
                     </tr>
+                    <div id="order_show">
+
+                    </div>
                   </table>
                 </div>
               </div>
             </div>
-            <?php // TODO: add price and qty for each item ?>
+
+            <div id="order_container">
+
+            </div>
 
             <div class="row">
               <div class="col-1">
@@ -152,20 +158,15 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
-    // var items = []
 
     $('#addn_item').click(function(){
       $('#addn_item_modl').modal('show');
-      $('#addn_item_modl').on('hidden.bs.modal', function (e) {
-        rowItemCount++;
-        $('#item_orders').append('<tr id="row'+rowItemCount+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="ordr_item[]" placeholder="Item" class="form-control ordr-list" readonly /> </td>'+
-          '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+rowItemCount+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
-      })
     });
 
     $(document).on('click', '.btn_remove', function(){
       var rowId = $(this).attr("id");
       $('#row'+rowId+'').remove();
+      $('#orderIndex_'+rowId+'').remove();
     });
 
     function chck_inpt(){
