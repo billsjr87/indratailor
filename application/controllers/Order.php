@@ -11,6 +11,7 @@ class Order extends CI_Controller {
 		$this->load->model('prfl_model','m_prfl');
 		$this->load->model('cust_model','m_cust');
 		$this->load->model('item_model','m_item');
+		$this->load->model('order_detail_model','m_detl');
 
 		$this->stor_indx = 1; // TODO: replace with login credential
 		$this->stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
@@ -30,11 +31,42 @@ class Order extends CI_Controller {
 
 	public function ordr_addn()
 	{
-		$data = array( // TODO: read profile data
+		$ordernum = $this->m_order->last_order_number();
+		if ($ordernum == 0) {
+			$ordernum = "AA000001";
+		} else {
+			$foreId = substr($ordernum,0,2);
+			$numId = substr($ordernum,2);
+			$err=0;
+			if ($numId == "999999") {
+				$numId = "000001";
+				$foreIdA = ord(substr($foreId,0,1));
+				$foreIdB = ord(substr($foreId,1));
+				if ($foreIdB == 90 && $foreIdA < 90) {
+					$foreId = chr($foreIdA + 1)."A";
+				} elseif ($foreIdB < 90 && $foreIdA <= 90) {
+					$foreId = chr($foreIdA).chr($foreIdB+1);
+				} elseif ($foreIdB == 90 && $foreIdA == 90) {
+					$err=1;
+				}
+			} else {
+				$numId += 1;
+				for ($i=6; $i > strlen($numId); $i--) {
+					$numId = "0".$numId;
+				}
+			}
+			if ($err == 0) {
+				$ordernum = $foreId.$numId;
+			} else {
+				$ordernum = "error";
+			}
+		}
+
+		$data = array(
 			'title' => 'Add Order',
 			'stor_indx' => $this->stor_indx,
 			'stor_prfl' => $this->stor_prfl,
-			'ordr_nmbr' => $this->m_order->last_order_number(),
+			'ordr_nmbr' => $ordernum,
 			'item_cate' => $this->m_item->read_item_category(),
 			'category' =>$this->m_item->read_category()
 		);
@@ -45,8 +77,7 @@ class Order extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	public function ordr_save()
-	{
+	public function ordr_save() {
 		$result['msg'] = "";
 		$result['url'] = "";
 
@@ -81,8 +112,7 @@ class Order extends CI_Controller {
 					'item_pric' => $prc
 				));
 			}
-			// $this->m_odet->add_order_detail($items); using insert_batch();
-			$detl_rslt = TRUE;
+			$detl_rslt = $this->m_detl->add_order_detail($items);
 			// insert accr
 			$accr_data = array ('ordr_nmbr' => $ordr_nmbr,'accr_amnt' => $ordr_fees,'accr_stat' => $accr_stat);
 			$accr_nmbr = $this->m_ar->add_accr($accr_data);

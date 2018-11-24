@@ -32,16 +32,16 @@
             <div class="row">
               <div class="col-3">
                 <label for="ordr_nmbr" style="font-size:0.8em;">Order Number</label>
-                <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo $ordr_nmbr+1; ?>" readonly required>
+                <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo $ordr_nmbr; ?>" readonly required>
               </div>
               <div class="col offset-3">
                 <label for="ordr_date" style="font-size:0.8em;">Order Date</label>
-                <input class="form-control" type="date" name="ordr_date" required>
+                <input class="form-control" type="date" name="ordr_date" id="ordr_date" required>
                 <!-- date now -->
               </div>
               <div class="col">
                 <label for="ordr_fndt" style="font-size:0.8em;">Finish Date</label>
-                <input class="form-control" type="date" name="ordr_fndt">
+                <input class="form-control" type="date" name="ordr_fndt" id="ordr_fndt">
               </div>
             </div>
 
@@ -106,7 +106,7 @@
                 <label for="ordr_fees" style="font-size:0.8em;">Total Fees</label>
               </div>
               <div class="col">
-                <input class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly required />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" placeholder="0" readonly required />
               </div>
             </div>
 
@@ -115,7 +115,7 @@
                 <label for="ordr_dopy" style="font-size:0.8em;">Payment</label>
               </div>
               <div class="col">
-                <input class="form-control" type="number" name="ordr_dopy" min="0" step="1000" value="0" />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" placeholder="0" />
               </div>
             </div>
 
@@ -124,7 +124,7 @@
                 <label for="ordr_accr" style="font-size:0.8em;">Acc. Recieveable</label>
               </div>
               <div class="col">
-                <input class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" value="0" readonly required />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" placeholder="0" readonly required />
               </div>
             </div>
 
@@ -158,6 +158,27 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
+    var now = new Date();
+
+    $('#ordr_dopy').on('focusout',function(){
+      var intDP = $('#ordr_dopy').val();
+      var intFees = $('#ordr_fees').val();
+      if (intFees != 0 && intFees - intDP > 0) {
+        $('#ordr_accr').val(intFees - intDP);
+      }
+    });
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    $('#ordr_date').val(today);
+
+    var amonthafter = new Date();
+    amonthafter.setDate(amonthafter.getDate() + 14);
+    var daya = ("0" + amonthafter.getDate()).slice(-2);
+    var montha = ("0" + (amonthafter.getMonth() + 1)).slice(-2);
+    var todaya = now.getFullYear()+"-"+(montha)+"-"+(daya) ;
+    $('#ordr_fndt').val(todaya);
 
     $('#addn_item').click(function(){
       $('#addn_item_modl').modal('show');

@@ -278,7 +278,6 @@
       itemInCart.push(itemToPut);
 
       numOfItems++;
-      // $('#order_container').empty();
       for (var i = 0; i < itemInCart.length; i++) {
         if ((numOfItems-1) == i) {
           $('#order_container').append('<input type="hidden" name="ordr_item[]" id="orderIndex_'+numOfItems+'" class="form-control" value="'+itemInCart[i]+'" />');
@@ -288,6 +287,17 @@
       }
 
       $('#clos_item').click();
+      var totalFees = $('#ordr_fees').val();
+      totalFees += (price*quantity);
+      $('#ordr_fees').val(totalFees);
+      var dp = $('#ordr_dopy').val();
+      if (dp != 0) {
+        if (totalFees < dp) {
+          dp = totalFees;
+          $('#ordr_dopy').val(dp);
+        }
+        $('#ordr_accr').val(totalFees - dp);
+      }
     }
 
   });
