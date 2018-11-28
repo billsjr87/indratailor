@@ -282,7 +282,7 @@
         if ((numOfItems-1) == i) {
           $('#order_container').append('<input type="hidden" name="ordr_item[]" id="orderIndex_'+numOfItems+'" class="form-control" value="'+itemInCart[i]+'" />');
           $('#order_show').append('<tr id="row'+numOfItems+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" value="'+itemToSHow+'" readonly /> </td>'+
-          '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove" type="button" name="remo_item" id="'+numOfItems+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
+          '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove d-print-none" type="button" name="remo_item" id="'+numOfItems+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
         }
       }
 

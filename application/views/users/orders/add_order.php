@@ -1,6 +1,6 @@
 <div class="col-9" style="margin-top:40px;">
   <div class="container" id="ordr_page">
-    <div class="card" style="margin-bottom:50px;">
+    <div class="card" id="printable_check" style="margin-bottom:50px;">
 
       <!-- card header start -->
       <div class="card-header">
@@ -54,7 +54,7 @@
               <div class="col" style="padding-right:0px;">
                 <input class="form-control" type="text" name="cust_name" id="cust_name" maxlength="32" placeholder="Customer Name" readonly>
               </div>
-              <div class="col-2" style="padding:0px 0px 0px 5px; display:inline-block;">
+              <div class="col-2 d-print-none" style="padding:0px 0px 0px 5px; display:inline-block;">
                 <button class="btn btn-outline-primary border-0" type="button" name="srch_cust" data-toggle="modal" data-target="#srch_cust_modl">
                   <i class="fas fa-search fa-lg"></i>
                 </button>
@@ -75,7 +75,7 @@
                   <table class="table border-0" id="item_orders" style="margin-bottom:5px;">
                     <tr>
                       <td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" readonly required /> </td>
-                      <td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-primary border-0" type="button" name="addn_item" id="addn_item"><i class="fas fa-plus-circle fa-lg"></i></button></td>
+                      <td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-primary border-0 d-print-none" type="button" name="addn_item" id="addn_item"><i class="fas fa-plus-circle fa-lg"></i></button></td>
                     </tr>
                     <div id="order_show">
 
@@ -130,7 +130,7 @@
 
             <hr />
 
-            <div class="row">
+            <div class="row d-print-none">
               <div class="col-2 offset-6">
                 <button class="btn btn-danger w-100" type="button" name="cancel" value="reset">CANCEL</button>
               </div>
@@ -212,8 +212,24 @@
       });
     }
 
-    function ordr_prnt(){
-      // TODO: add print function
+    function ordr_prnt(divId){
+      var content = document.getElementById(divId).innerHTML;
+      var title = $('input[name="ordr_nmbr"]').val();
+      var mywindow = window.open('', title, 'fullscreen=yes');
+
+      mywindow.document.write('<html lang="en"><head><title>'+title+'</title>');
+      mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">'+
+      '<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/modstyles.css">'+
+      '<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/all.min.css">')
+      mywindow.document.write('</head><body>');
+      mywindow.document.write(content);
+      mywindow.document.write('</body></html>');
+      mywindow.focus();
+
+      setTimeout(function(){
+        mywindow.print();
+        mywindow.close();
+      }, 200);
     }
 
     $('#save').click(function(){
@@ -224,8 +240,8 @@
 
     $('#prnt').click(function(){
       if (chck_inpt()) {
-        ordr_save();
-        ordr_prnt();
+        // ordr_save();
+        ordr_prnt('printable_check');
       }
     });
 
