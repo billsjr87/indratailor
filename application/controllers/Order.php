@@ -68,7 +68,8 @@ class Order extends CI_Controller {
 			'stor_prfl' => $this->stor_prfl,
 			'ordr_nmbr' => $ordernum,
 			'item_cate' => $this->m_item->read_item_category(),
-			'category' =>$this->m_item->read_category()
+			'category' => $this->m_item->read_category(),
+			'list_cust' => $this->m_cust->read_all()
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');

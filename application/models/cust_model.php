@@ -17,4 +17,24 @@ class Cust_model extends CI_Model {
     }
   }
 
+  public function read_all () {
+    $this->db->from('tb_custs');
+    $this->db->order_by('cust_name','asc');
+    $query = $this->db->get();
+    $query->result();
+    $result = array();
+    foreach ($query->result() as $row) {
+      $cust = array(
+        'cust_indx' => $row->cust_indx,
+        'cust_titl' => $row->cust_titl,
+        'cust_name' => $row->cust_name,
+        'cust_phnn' => $row->cust_phnn,
+        'cust_addr' => $row->cust_addr,
+        'cust_rgdt' => $row->cust_rgdt
+      );
+      array_push($result, $cust);
+    }
+    return $result;
+  }
+
 }

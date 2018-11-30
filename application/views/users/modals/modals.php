@@ -158,13 +158,120 @@
 </div>
 <!-- add item modal end -->
 
+<!-- add search cust start -->
+<div class="modal fade" id="srch_cust_modl" tabindex="-1" role="dialog" aria-labelledby="srch_cust" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="overflow-y:initial !important;">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="srch_cust">Search Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times text-white"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="height: 60vh; overflow-y:auto;">
+
+        <form name="form_srch_cust" id="form_srch_cust">
+
+          <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
+              <label for="srch_kywd" style="font-size:0.8em;">Search</label>
+            </div>
+            <div class="col-9">
+              <input class="form-control" type="text" name="srch_kywd" id="srch_kywd" placeholder="Name, Address or Phone Number" />
+            </div>
+          </div>
+
+          <div class="row-fluid" style="margin-bottom:10px;">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="width:8%;">No.</th>
+                    <th style="width:10%;">Title</th>
+                    <th style="width:35%;">Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody id="cust_list">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <hr />
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <div class="row" style="width:100%;">
+          <div class="col-6">
+          </div>
+          <div class="col-3">
+            <button class="btn btn-danger w-100" type="button" name="clos_srch" id="clos_srch" value="reset" data-dismiss="modal">CANCEL</button>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-success w-100" type="button" name="slct_cust" id="slct_cust" value="submit">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- add item modal end -->
+
 <script>
   $(document).ready(function(){
 
+    var listCustomer = <?php echo json_encode($list_cust); ?>;
     var categories = <?php echo json_encode($category); ?>;
     var itemCategory = <?php echo json_encode($item_cate); ?>;
     var numOfItems = 0;
     var itemInCart = [];
+    var customerContainer = $('#cust_list');
+    var customers = [];
+
+    function showCustomers (list) {
+      $('#cust_list').empty();
+      customers = [];
+      if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+          $('#cust_list').append('<tr id="'+list[i].cust_indx+'"><td>'+(i+1)+'</td><td>'+(list[i].cust_titl == 1 ? "Mr." : "Ms.")+
+          '</td><td>'+list[i].cust_name+'</td><td>'+list[i].cust_phnn+'</td><td>'+
+          list[i].cust_addr+'</td></tr>');
+          customers.push(list[i]);
+        }
+      } else {
+        $('#cust_list').append('<tr><td colspan="5">No customer recorded.</td></tr>');
+      }
+    }
+
+    // TODO: add click function to customers
+
+    showCustomers(listCustomer);
+
+    var timer;
+    $('#srch_kywd').keyup(function(){
+      clearTimeout(timer);
+      timer = setTimeout(function (event) {
+        var searchList = searchAndGet($('#srch_kywd').val());
+        showCustomers(searchList);
+      },800);
+    });
+
+    function searchAndGet(keyword) {
+      var result = [];
+      for (var i = 0; i < listCustomer.length; i++) {
+        if (listCustomer[i].cust_name.toLowerCase().includes(keyword.toLowerCase()) ||
+        listCustomer[i].cust_addr.toLowerCase().includes(keyword.toLowerCase()) ||
+        listCustomer[i].cust_phnn.includes(keyword.toLowerCase())) {
+          result.push(listCustomer[i]);
+        }
+      }
+      return result;
+    }
 
     for (var i = 0; i < categories.length; i++) {
       $('#item_ctgy').append('<option value="'+categories[i].cate_indx+'">'+categories[i].cate_name+'</option>');
