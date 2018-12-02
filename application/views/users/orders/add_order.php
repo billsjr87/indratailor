@@ -154,6 +154,10 @@
   </div>
 </div>
 
+<div id="editor">
+
+</div>
+
 <script>
   $(document).ready(function(){
 
@@ -244,11 +248,27 @@
       mywindow.document.write('</head><body>');
       mywindow.document.write(content);
       mywindow.document.write('</body></html>');
-      mywindow.focus();
+
+      var doc = new jsPDF('p', 'mm', 'a4');
+      doc.internal.scaleFactor = 5.5;
+      var margins = { top:10, bottom:10, left:10, width:100 };
+      var options = { pagesplit: true };
+      doc.setProperties({
+                    title: title,
+                    author: 'creativeLab',
+                    creator: '© creativeLab 2018'
+                });
+      // var specialElementHandlers = {'#editor': function (element, renderer) {return true;} };
+      // mywindow.focus();
 
       setTimeout(function(){
-        mywindow.print();
-        mywindow.close();
+        doc.addHTML(mywindow.document.body, 10, 10, options, function(){
+          doc.save('test.pdf');
+          mywindow.close();
+        }, margins);
+        // doc.fromHTML(mywindow.document.html(), 15, 15, { 'width': 170, 'elementHandlers': specialElementHandlers });
+        // doc.save('sample-file.pdf');
+        // mywindow.print();
       }, 200);
     }
 
@@ -262,10 +282,10 @@
     // button on save n print click
     // TODO: add save after finish printing or always print after saving pdf to database (add hidden input for pdf files)
     $('#prnt').click(function(){
-      if (chck_inpt()) {
+      // if (chck_inpt()) {
         // ordr_save();
         ordr_prnt('printable_check');
-      }
+      // }
     });
 
   });
