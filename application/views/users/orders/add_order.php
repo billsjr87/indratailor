@@ -158,8 +158,8 @@
   $(document).ready(function(){
 
     var rowItemCount = 1;
-    var now = new Date();
 
+    // calculate account recieveable after focus out on downpayment
     $('#ordr_dopy').on('focusout',function(){
       var intDP = $('#ordr_dopy').val();
       var intFees = $('#ordr_fees').val();
@@ -168,11 +168,12 @@
       }
     });
 
+    // add & calculate date start and date end
+    var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
     $('#ordr_date').val(today);
-
     var amonthafter = new Date();
     amonthafter.setDate(amonthafter.getDate() + 14);
     var daya = ("0" + amonthafter.getDate()).slice(-2);
@@ -180,21 +181,39 @@
     var todaya = now.getFullYear()+"-"+(montha)+"-"+(daya) ;
     $('#ordr_fndt').val(todaya);
 
+    // show add item modal on click
     $('#addn_item').click(function(){
       $('#addn_item_modl').modal('show');
     });
 
+    // remove item on click
     $(document).on('click', '.btn_remove', function(){
       var rowId = $(this).attr("id");
       $('#row'+rowId+'').remove();
       $('#orderIndex_'+rowId+'').remove();
     });
 
+    // order validation
     function chck_inpt(){
-      // TODO: add input validation
-      return true;
+      var err = false;
+      var err_msg = '';
+      if ($('#ordr_date').val() == '') {
+        $('#ordr_date').val(today);
+        err = false;
+      } else if ($('#cust_indx').val() == '') {
+        err_msg = 'No customer choosen.';
+        err = true;
+      } else if (itemInCart.length == 0) {
+        err_msg = 'No Item add.';
+        err = true;
+      }
+      if (err) {
+        alert(err_msg);
+      }
+      return !err;
     }
 
+    // add order to database
     function ordr_save(){
       $.ajax({
         url:"<?php echo base_url('order/ordr_save'); ?>",
@@ -212,11 +231,12 @@
       });
     }
 
+    // print order
+    // TODO: add print name and place (pdf), print out to printers
     function ordr_prnt(divId){
       var content = document.getElementById(divId).innerHTML;
       var title = $('input[name="ordr_nmbr"]').val();
       var mywindow = window.open('', title, 'fullscreen=yes');
-
       mywindow.document.write('<html lang="en"><head><title>'+title+'</title>');
       mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">'+
       '<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/modstyles.css">'+
@@ -232,12 +252,15 @@
       }, 200);
     }
 
+    // button save order on click
     $('#save').click(function(){
       if (chck_inpt()) {
         ordr_save();
       }
     });
 
+    // button on save n print click
+    // TODO: add save after finish printing or always print after saving pdf to database (add hidden input for pdf files)
     $('#prnt').click(function(){
       if (chck_inpt()) {
         // ordr_save();

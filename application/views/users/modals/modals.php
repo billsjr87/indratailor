@@ -176,14 +176,19 @@
             <div class="col-2">
               <label for="srch_kywd" style="font-size:0.8em;">Search</label>
             </div>
-            <div class="col-9">
+            <div class="col-9 pr-0">
               <input class="form-control" type="text" name="srch_kywd" id="srch_kywd" placeholder="Name, Address or Phone Number" />
+            </div>
+            <div class="col-1 pl-0">
+              <button class="btn btn-outline-secondary border-0" type="button" id="rset_kywd">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
 
           <div class="row-fluid" style="margin-bottom:10px;">
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table">
                 <thead>
                   <tr>
                     <th style="width:8%;">No.</th>
@@ -233,25 +238,49 @@
     var customerContainer = $('#cust_list');
     var customers = [];
 
+    // show list of customers
     function showCustomers (list) {
       $('#cust_list').empty();
+      var selectedOption;
       customers = [];
       if (list.length > 0) {
         for (var i = 0; i < list.length; i++) {
-          $('#cust_list').append('<tr id="'+list[i].cust_indx+'"><td>'+(i+1)+'</td><td>'+(list[i].cust_titl == 1 ? "Mr." : "Ms.")+
+          $('#cust_list').append('<tr name="cust_optn" id="'+list[i].cust_indx+'"><td>'+(i+1)+'</td><td>'+(list[i].cust_titl == 1 ? "Mr." : "Ms.")+
           '</td><td>'+list[i].cust_name+'</td><td>'+list[i].cust_phnn+'</td><td>'+
           list[i].cust_addr+'</td></tr>');
           customers.push(list[i]);
         }
+        $('tr[name="cust_optn"]').on('click', function(event){
+          if (selectedOption != null) {
+            selectedOption.removeClass('table-active');
+          }
+          $(this).addClass('table-active');
+          selectedOption = $(this);
+        });
       } else {
         $('#cust_list').append('<tr><td colspan="5">No customer recorded.</td></tr>');
       }
     }
 
-    // TODO: add click function to customers
+    // add customer button click, return value to order
+    $('#slct_cust').on('click',function(){
+      if (!$('tr[name="cust_optn"]').hasClass('table-active')) {
+        alert('No Customer Selected.');
+      } else {
+        var selectedId = $('tr.table-active[name="cust_optn"]').attr('id');
+        $('#cust_indx').val(selectedId);
+        for (var i = 0; i < customers.length; i++) {
+          if (customers[i].cust_indx == selectedId) {
+            $('#cust_name').val(customers[i].cust_name);
+          }
+        }
+        $('#srch_cust_modl').modal('hide');
+      }
+    });
 
     showCustomers(listCustomer);
 
+    // add timer to search by keyword
     var timer;
     $('#srch_kywd').keyup(function(){
       clearTimeout(timer);
@@ -261,6 +290,7 @@
       },800);
     });
 
+    // get customer with keyword
     function searchAndGet(keyword) {
       var result = [];
       for (var i = 0; i < listCustomer.length; i++) {
@@ -273,10 +303,18 @@
       return result;
     }
 
+    // reset search keyword and customers list
+    $('#rset_kywd').on('click',function(){
+      $('#srch_kywd').val('');
+      showCustomers(listCustomer);
+    });
+
+    // add category to combobox
     for (var i = 0; i < categories.length; i++) {
       $('#item_ctgy').append('<option value="'+categories[i].cate_indx+'">'+categories[i].cate_name+'</option>');
     }
 
+    // add item type after click category
     $('#item_ctgy').on('change',function(){
       var selectedCategory = this.value;
       $('#item_type').empty();
@@ -288,20 +326,24 @@
       }
     });
 
+    // calculate after focus out in price
     $('#item_pric').on('focusout', function(){
       $('#item_nett').val(calculateNettPrice());
     });
 
+    // calculate after focus out in quatity
     $('#item_qtty').on('focusout', function(){
       $('#item_nett').val(calculateNettPrice());
     });
 
+    // calculating nett price
     function calculateNettPrice(){
       var price = $('#item_pric').val();
       var quantity = $('#item_qtty').val();
       return quantity * price;
     }
 
+    // add new customer check validation
     function chck_cust () {
       var form_addn_cust = $("#form_addn_cust");
       form_addn_cust.validate({
@@ -335,6 +377,7 @@
       return form_addn_cust.valid();
     }
 
+    // save new customer to database
     function cust_save () {
       $.ajax({
         url:"<?php echo base_url('order/cust_save'); ?>",
@@ -357,21 +400,24 @@
       });
     }
 
+    // button save new customer click
     $('#save_cust').click(function(){
       if (chck_cust()) {
         cust_save();
       }
     });
 
+    // button add item click
     $('#save_item').click(function(){
       var price = $('#item_pric').val();
       if (price != 0) {
         item_save();
       } else {
-        // TODO: need price
+        alert('Price needed.');
       }
     });
 
+    // add item to order list
     function item_save(){
       var price = $('#item_pric').val();
       var quantity = $('#item_qtty').val();
