@@ -17,11 +17,12 @@ class Order extends CI_Controller {
 		$this->stor_prfl = $this->m_prfl->read_prfl($this->stor_indx);
 	}
 
-	public function index($message = NULL)
-	{
+	public function index($message = NULL) {
+		$orders = $this->m_order->getAllOrder();
 		$data = array(
 			'title' => 'Orders',
-			'message' => $message
+			'message' => $message,
+			'list_order' => $orders
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');
@@ -29,10 +30,9 @@ class Order extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	public function ordr_addn()
-	{
+	public function ordr_addn() {
 		$ordernum = $this->m_order->last_order_number();
-		if ($ordernum == 0) {
+		if ($ordernum == '') {
 			$ordernum = "AA000001";
 		} else {
 			$foreId = substr($ordernum,0,2);
@@ -51,7 +51,8 @@ class Order extends CI_Controller {
 				}
 			} else {
 				$numId += 1;
-				for ($i=6; $i > strlen($numId); $i--) {
+				$needL = 6 - strlen($numId);
+				for ($i=0; $i < $needL; $i++) {
 					$numId = "0".$numId;
 				}
 			}
@@ -75,6 +76,7 @@ class Order extends CI_Controller {
 		$this->load->view('templates/nav');
 		$this->load->view('users/modals/modals');
 		$this->load->view('users/orders/add_order');
+		$this->load->view('templates/invoices');
 		$this->load->view('templates/footer');
 	}
 
@@ -95,6 +97,7 @@ class Order extends CI_Controller {
 		$ordr_dopy = $this->input->post("ordr_dopy");
 		$ordr_accr = $this->input->post("ordr_accr");
 		$accr_stat = ($ordr_dopy == $ordr_fees and $ordr_accr == 0) ? 1 : 0;
+		date_default_timezone_set('Asia/Jakarta');
 		$trax_date = date('Y-m-d H:i:s');
 
 		$ordr_data = array('ordr_nmbr' => $ordr_nmbr, 'trax_date' => $trax_date, 'ordr_date' => $ordr_date,'ordr_fndt' => $ordr_fndt,
@@ -119,7 +122,7 @@ class Order extends CI_Controller {
 			$accr_nmbr = $this->m_ar->add_accr($accr_data);
 			// insert pymt
 			if ($accr_nmbr != 0 and $ordr_dopy != 0) {
-				$pymt_data = array('accr_nmbr' => $accr_nmbr,'pymt_date' => $ordr_date,'pymt_amnt' => $ordr_dopy);
+				$pymt_data = array('accr_nmbr' => $accr_nmbr,'pymt_date' => $trax_date,'pymt_amnt' => $ordr_dopy);
 				$this->m_pymt->add_pymt($pymt_data);
 			}
 			if ($accr_nmbr != 0 and $detl_rslt) {
@@ -158,5 +161,49 @@ class Order extends CI_Controller {
 
 		echo json_encode($result);
 	}
+
+	//
+	// public function ordr_invoice($fileName){
+	// 	// $pdf = base64_decode($_POST['file']);
+	// 	if (!empty($_FILES['data'])) {
+	// 		$pdf = $_FILES['data']['tmp_name'];
+	// 		$upload_path = base_url() . "assets/images/invoices/";
+	// 		$target_file = $upload_path . $fileName . ".pdf";
+	// 		move_uploaded_file($pdf, $target_file);
+	// 		echo "scs";
+	// 	} else {
+	// 		echo 'no data sent';
+	// 	}
+	// 	// $config['upload_path']=base_url()."assets/images/invoices/";
+	// 	// $config['allowed_types']='pdf';
+	// 	// $config['encrypt_name'] = FALSE;
+	// 	// $this->load->library('upload',$config);
+	// 	// if($this->upload->do_upload('data')){
+	// 	// 	$data = array('upload_data' => $this->upload->data());
+	// 		// $judul= $this->input->post('judul');
+	// 		// $image= $data['upload_data']['file_name'];
+	// 		// $result= $this->m_upload->simpan_upload($judul,$image);
+	// 		// echo json_decode($result);
+	// 	// }
+	//
+	// 	// $config['upload_path'] = base_url()."assets/images/invoices/";
+	// 	// $config['allowed_types'] = 'pdf';
+	// 	// $config['file_name'] = $fileName.'.pdf';
+	// 	// $this->load->library('upload', $config);
+	// 	// $this->upload->initialize($config);
+	// 	// // if (!)  {
+	// 	// 	$this->upload->do_upload('blob');
+	// 	// 	$data = $this->upload->data();
+	// 	// 	// $this->files_model->insert_file($_FILES[][], $data['upload_path'].$data['file_name']);
+	// 	// 	echo $fileName;
+	// 	// } else {
+	// 	// 	echo "failed upload";
+	// 	// }
+	//
+	//
+	// 	// $target_file = $upload_path.basename($_FILES["pdf"]["name"]);
+	// 	// $file_name = $_FILES['pdf']['tmp_name'];
+	// 	// move_uploaded_file($file_name, $target_file);
+	// }
 
 }

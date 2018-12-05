@@ -1,5 +1,12 @@
-<div class="col-9" style="margin-top:40px;">
+<div class="col-10" style="margin-top:40px;">
   <div class="container" id="ordr_page">
+    <h2>
+      Catat Pesanan
+      <a href="<?php echo base_url('order'); ?>" role="button" class="btn btn-dark btn-sm">
+        <i class="fas fa-arrow-left float-right"> back</i>
+      </a>
+    </h2>
+    <hr />
     <div class="card" id="printable_check" style="margin-bottom:50px;">
 
       <!-- card header start -->
@@ -29,32 +36,30 @@
 
             <input type="hidden" name="stor_indx" value="<?php echo $stor_indx; ?>" required>
 
-            <div class="row">
+            <div class="row mb-2">
               <div class="col-3">
                 <label for="ordr_nmbr" style="font-size:0.8em;">Order Number</label>
                 <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo $ordr_nmbr; ?>" readonly required>
               </div>
-              <div class="col offset-3">
+              <div class="col-3 offset-3">
                 <label for="ordr_date" style="font-size:0.8em;">Order Date</label>
                 <input class="form-control" type="date" name="ordr_date" id="ordr_date" required>
                 <!-- date now -->
               </div>
-              <div class="col">
+              <div class="col-3">
                 <label for="ordr_fndt" style="font-size:0.8em;">Finish Date</label>
                 <input class="form-control" type="date" name="ordr_fndt" id="ordr_fndt">
               </div>
             </div>
 
-            <hr />
-
             <div class="row">
-              <div class="col-1">
+              <div class="col-12">
                 <label for="cust_name" style="font-size:0.8em;">Customer Name</label>
               </div>
-              <div class="col" style="padding-right:0px;">
+              <div class="col-6 pr-0">
                 <input class="form-control" type="text" name="cust_name" id="cust_name" maxlength="32" placeholder="Customer Name" readonly>
               </div>
-              <div class="col-2 d-print-none" style="padding:0px 0px 0px 5px; display:inline-block;">
+              <div class="col-2 pl-0 d-print-none" style="display:inline-block;">
                 <button class="btn btn-outline-primary border-0" type="button" name="srch_cust" data-toggle="modal" data-target="#srch_cust_modl">
                   <i class="fas fa-search fa-lg"></i>
                 </button>
@@ -65,6 +70,8 @@
             </div>
 
             <input type="hidden" name="cust_indx" id="cust_indx" required>
+
+            <hr />
 
             <div class="row">
               <div class="col-1">
@@ -106,7 +113,7 @@
                 <label for="ordr_fees" style="font-size:0.8em;">Total Fees</label>
               </div>
               <div class="col">
-                <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" placeholder="0" readonly required />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly required />
               </div>
             </div>
 
@@ -115,7 +122,7 @@
                 <label for="ordr_dopy" style="font-size:0.8em;">Payment</label>
               </div>
               <div class="col">
-                <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" placeholder="0" />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" value="0" />
               </div>
             </div>
 
@@ -127,6 +134,8 @@
                 <input style="text-align:right;" class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" placeholder="0" readonly required />
               </div>
             </div>
+
+            <!-- <input style="display:none;" type="file" name="invoice" id="invoice" accept="application/pdf" /> -->
 
             <hr />
 
@@ -166,9 +175,11 @@
     // calculate account recieveable after focus out on downpayment
     $('#ordr_dopy').on('focusout',function(){
       var intDP = $('#ordr_dopy').val();
+      $('#bayar').text(intDP);
       var intFees = $('#ordr_fees').val();
-      if (intFees != 0 && intFees - intDP > 0) {
+      if (intFees != 0 && intFees - intDP >= 0) {
         $('#ordr_accr').val(intFees - intDP);
+        $('#sisa').text((intFees - intDP));
       }
     });
 
@@ -177,24 +188,33 @@
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);
     var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    var todayForNote = (day)+"/"+(month)+"/"+now.getFullYear();
     $('#ordr_date').val(today);
+    $('#print_tanggal').text(todayForNote);
     var amonthafter = new Date();
     amonthafter.setDate(amonthafter.getDate() + 14);
     var daya = ("0" + amonthafter.getDate()).slice(-2);
     var montha = ("0" + (amonthafter.getMonth() + 1)).slice(-2);
-    var todaya = now.getFullYear()+"-"+(montha)+"-"+(daya) ;
+    var todaya = amonthafter.getFullYear()+"-"+(montha)+"-"+(daya) ;
+    var todayaForNote = (daya)+"/"+(montha)+"/"+amonthafter.getFullYear();
     $('#ordr_fndt').val(todaya);
+    $('#print_tgl_selesai').text(todayaForNote);
+
+    $('#ordr_date').on('change', function(){
+      var selectedDate = $(this).val().split('-');
+      var stringOfDate = selectedDate[2]+'/'+selectedDate[1]+'/'+selectedDate[0];
+      $('#print_tanggal').text(stringOfDate);
+    });
+
+    $('#ordr_fndt').on('change', function(){
+      var selectedDate = $(this).val().split('-');
+      var stringOfDate = selectedDate[2]+'/'+selectedDate[1]+'/'+selectedDate[0];
+      $('#print_tgl_selesai').text(stringOfDate);
+    });
 
     // show add item modal on click
     $('#addn_item').click(function(){
       $('#addn_item_modl').modal('show');
-    });
-
-    // remove item on click
-    $(document).on('click', '.btn_remove', function(){
-      var rowId = $(this).attr("id");
-      $('#row'+rowId+'').remove();
-      $('#orderIndex_'+rowId+'').remove();
     });
 
     // order validation
@@ -207,7 +227,7 @@
       } else if ($('#cust_indx').val() == '') {
         err_msg = 'No customer choosen.';
         err = true;
-      } else if (itemInCart.length == 0) {
+      } else if ($('#ordr_fees').val() == 0) {
         err_msg = 'No Item add.';
         err = true;
       }
@@ -225,6 +245,8 @@
         data:$('#form_addn_ordr').serialize(),
         success:function(data)
         {
+          data = JSON.parse(data);
+          // console.log(data);
           if (data.url != "") {
             alert(data.msg);
             window.location.href = "<?php echo base_url(); ?>" + data.url + "";
@@ -236,7 +258,6 @@
     }
 
     // print order
-    // TODO: add print name and place (pdf), print out to printers
     function ordr_prnt(divId){
       var content = document.getElementById(divId).innerHTML;
       var title = $('input[name="ordr_nmbr"]').val();
@@ -248,29 +269,17 @@
       mywindow.document.write('</head><body>');
       mywindow.document.write(content);
       mywindow.document.write('</body></html>');
-
-      var doc = new jsPDF('p', 'mm', 'a4');
-      doc.internal.scaleFactor = 5.5;
-      var margins = { top:10, bottom:10, left:10, width:100 };
-      var options = { pagesplit: true };
-      doc.setProperties({
-                    title: title,
-                    author: 'creativeLab',
-                    creator: '© creativeLab 2018'
-                });
-      // var specialElementHandlers = {'#editor': function (element, renderer) {return true;} };
-      // mywindow.focus();
+      $(divId, mywindow.document).removeClass('d-none');
+      mywindow.onafterprint = function(){
+        return true;
+      };
 
       setTimeout(function(){
-        doc.addHTML(mywindow.document.body, 10, 10, options, function(){
-          doc.save('test.pdf');
-          mywindow.close();
-        }, margins);
-        // doc.fromHTML(mywindow.document.html(), 15, 15, { 'width': 170, 'elementHandlers': specialElementHandlers });
-        // doc.save('sample-file.pdf');
-        // mywindow.print();
-      }, 200);
+        mywindow.print();
+        mywindow.close();
+      }, 600);
     }
+    // TODO: check print succcess
 
     // button save order on click
     $('#save').click(function(){
@@ -280,12 +289,11 @@
     });
 
     // button on save n print click
-    // TODO: add save after finish printing or always print after saving pdf to database (add hidden input for pdf files)
     $('#prnt').click(function(){
-      // if (chck_inpt()) {
-        // ordr_save();
-        ordr_prnt('printable_check');
-      // }
+      if (chck_inpt()) {
+        ordr_prnt('mstr_invoice')
+        ordr_save();
+      }
     });
 
   });

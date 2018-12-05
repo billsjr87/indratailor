@@ -10,11 +10,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/modstyles.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/dataTable.bootstrap.min.css">
     <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/popper.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.dataTable.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/dataTable.bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/jsPDF.min.js"></script>
+    <!-- <script src="<?php //echo base_url(); ?>assets/js/jsPDF.min.js"></script> -->
   </head>
   <body>
     <div class="container-fluid">

@@ -272,6 +272,7 @@
         for (var i = 0; i < customers.length; i++) {
           if (customers[i].cust_indx == selectedId) {
             $('#cust_name').val(customers[i].cust_name);
+            $('#print_nama').text(customers[i].cust_name);
           }
         }
         $('#srch_cust_modl').modal('hide');
@@ -394,6 +395,7 @@
             alert('Data saved.');
             $('#cust_indx').val(data.msg);
             $('#cust_name').val(nmcs);
+            $('#print_nama').text(nmcs);
             $('#clos_cust').click();
           }
         }
@@ -428,21 +430,27 @@
 
       var itemToPut = quantity+';'+type+';'+price;
       var itemToSHow = quantity+'x '+cateName+' : '+typeName;
+
+      // var additem = {qty: quantity, item: cateName+' - '+typeName, prc: price};
+      // itemInvoice.push(addn_item);
       itemInCart.push(itemToPut);
 
+      // alert(itemInvoice[0].qty);
       numOfItems++;
       for (var i = 0; i < itemInCart.length; i++) {
         if ((numOfItems-1) == i) {
           $('#order_container').append('<input type="hidden" name="ordr_item[]" id="orderIndex_'+numOfItems+'" class="form-control" value="'+itemInCart[i]+'" />');
           $('#order_show').append('<tr id="row'+numOfItems+'"><td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" value="'+itemToSHow+'" readonly /> </td>'+
           '<td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-danger border-0 btn_remove d-print-none" type="button" name="remo_item" id="'+numOfItems+'"><i class="fas fa-minus-circle fa-lg"></i></button></td></tr>');
+          $('#daftar_belanja').append('<tr id="daftar_'+numOfItems+'"><td class="text-center">'+(i+1)+'</td><td class="text-center">'+itemInCart[i].split(";")[0]+' pcs</td><td>'+itemToSHow.split("x")[1]+'</td><td class="text-right">'+itemInCart[i].split(";")[2]+'</td><td class="text-right" style="padding-right:20px;">'+(itemInCart[i].split(";")[0]*itemInCart[i].split(";")[2])+'</td></tr>');
         }
       }
 
       $('#clos_item').click();
-      var totalFees = $('#ordr_fees').val();
-      totalFees += (price*quantity);
+      var totalFees = parseInt($('#ordr_fees').val());
+      totalFees += parseInt(price*quantity);
       $('#ordr_fees').val(totalFees);
+      $('#biaya').text(totalFees);
       var dp = $('#ordr_dopy').val();
       if (dp != 0) {
         if (totalFees < dp) {
@@ -450,8 +458,27 @@
           $('#ordr_dopy').val(dp);
         }
         $('#ordr_accr').val(totalFees - dp);
+        $('#sisa').text((totalFees - dp));
+      } else {
+        $('#ordr_accr').val(totalFees - dp);
+        $('#sisa').text((totalFees - dp));
       }
     }
+
+    // remove item on click
+    $(document).on('click', '.btn_remove', function(){
+      var rowId = $(this).attr("id");
+      $('#row'+rowId+'').remove();
+      $('#orderIndex_'+rowId+'').remove();
+      $('#daftar_'+rowId+'').remove();
+      var minPrc = itemInCart[rowId-1].split(";")[2];
+      var minQty = itemInCart[rowId-1].split(";")[0];
+      var minFee = minQty * minPrc;
+      var totalFees = $('#ordr_fees').val();
+      totalFees -= minFee;
+      $('#ordr_fees').val(totalFees);
+      $('#biaya').text(totalFees);
+    });
 
   });
 </script>
