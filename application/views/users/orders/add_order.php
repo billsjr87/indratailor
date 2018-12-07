@@ -3,7 +3,7 @@
     <h2>
       Catat Pesanan
       <a href="<?php echo base_url('order'); ?>" role="button" class="btn btn-dark btn-sm">
-        <i class="fas fa-arrow-left float-right"> back</i>
+        <i class="fas fa-arrow-left float-right"> kembali</i>
       </a>
     </h2>
     <hr />
@@ -38,26 +38,26 @@
 
             <div class="row mb-2">
               <div class="col-3">
-                <label for="ordr_nmbr" style="font-size:0.8em;">Order Number</label>
+                <label for="ordr_nmbr" style="font-size:0.8em;">Nomer Nota</label>
                 <input class="form-control" type="text" maxlength="12" name="ordr_nmbr" value="<?php echo $ordr_nmbr; ?>" readonly required>
               </div>
               <div class="col-3 offset-3">
-                <label for="ordr_date" style="font-size:0.8em;">Order Date</label>
+                <label for="ordr_date" style="font-size:0.8em;">Tanggal Pesan</label>
                 <input class="form-control" type="date" name="ordr_date" id="ordr_date" required>
                 <!-- date now -->
               </div>
               <div class="col-3">
-                <label for="ordr_fndt" style="font-size:0.8em;">Finish Date</label>
+                <label for="ordr_fndt" style="font-size:0.8em;">Tanggal Selesai</label>
                 <input class="form-control" type="date" name="ordr_fndt" id="ordr_fndt">
               </div>
             </div>
 
             <div class="row">
               <div class="col-12">
-                <label for="cust_name" style="font-size:0.8em;">Customer Name</label>
+                <label for="cust_name" style="font-size:0.8em;">Nama Pelanggan</label>
               </div>
               <div class="col-6 pr-0">
-                <input class="form-control" type="text" name="cust_name" id="cust_name" maxlength="32" placeholder="Customer Name" readonly>
+                <input class="form-control" type="text" name="cust_name" id="cust_name" maxlength="32" placeholder="Nama Pelanggan" readonly>
               </div>
               <div class="col-2 pl-0 d-print-none" style="display:inline-block;">
                 <button class="btn btn-outline-primary border-0" type="button" name="srch_cust" data-toggle="modal" data-target="#srch_cust_modl">
@@ -75,13 +75,13 @@
 
             <div class="row">
               <div class="col-1">
-                <label for="cust_ordr" style="font-size:0.8em;">Customer Orders</label>
+                <label for="cust_ordr" style="font-size:0.8em;">Daftar Pesanan</label>
               </div>
               <div class="col">
                 <div class="table-responsive">
                   <table class="table border-0" id="item_orders" style="margin-bottom:5px;">
                     <tr>
-                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Item" class="form-control ordr-list" readonly required /> </td>
+                      <td style="padding:2px 0px 5px 0px;"><input type="text" name="" placeholder="Pesanan" class="form-control ordr-list" readonly required /> </td>
                       <td style="padding:2px 0px 5px 5px;width:5%;"><button class="btn btn-outline-primary border-0 d-print-none" type="button" name="addn_item" id="addn_item"><i class="fas fa-plus-circle fa-lg"></i></button></td>
                     </tr>
                     <div id="order_show">
@@ -98,10 +98,10 @@
 
             <div class="row">
               <div class="col-1">
-                <label for="ordr_detl" style="font-size:0.8em;">Other Details</label>
+                <label for="ordr_detl" style="font-size:0.8em;">Keterangan</label>
               </div>
               <div class="col">
-                <textarea class="form-control" name="ordr_detl" rows="3" cols="80" placeholder="Other details" style="resize:none;"></textarea>
+                <textarea class="form-control" name="ordr_detl" rows="3" cols="80" placeholder="Keterangan" style="resize:none;"></textarea>
                 <!-- <input class="form-control" type="text" name="ordr_detl" maxlength="256" placeholder="Other details"> -->
               </div>
             </div>
@@ -110,7 +110,7 @@
 
             <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
-                <label for="ordr_fees" style="font-size:0.8em;">Total Fees</label>
+                <label for="ordr_fees" style="font-size:0.8em;">Biaya</label>
               </div>
               <div class="col">
                 <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly required />
@@ -119,7 +119,7 @@
 
             <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
-                <label for="ordr_dopy" style="font-size:0.8em;">Payment</label>
+                <label for="ordr_dopy" style="font-size:0.8em;">Bayar</label>
               </div>
               <div class="col">
                 <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" value="0" />
@@ -128,7 +128,7 @@
 
             <div class="row" style="margin-bottom:5px;">
               <div class="col-1 offset-7">
-                <label for="ordr_accr" style="font-size:0.8em;">Acc. Recieveable</label>
+                <label for="ordr_accr" style="font-size:0.8em;">Sisa</label>
               </div>
               <div class="col">
                 <input style="text-align:right;" class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" placeholder="0" readonly required />
@@ -141,13 +141,13 @@
 
             <div class="row d-print-none">
               <div class="col-2 offset-6">
-                <button class="btn btn-danger w-100" type="button" name="cancel" value="reset">CANCEL</button>
+                <button class="btn btn-danger w-100" type="button" name="cancel" value="reset">BATAL</button>
               </div>
               <div class="col-2">
-                <button class="btn btn-success w-100" type="button" name="save" id="save" value="submit">SAVE</button>
+                <button class="btn btn-success w-100" type="button" name="save" id="save" value="submit">SIMPAN</button>
               </div>
               <div class="col-2">
-                <button class="btn btn-warning w-100" type="button" name="prnt" id="prnt" value="submit">SAVE & PRINT</button>
+                <button class="btn btn-warning w-100" type="button" name="prnt" id="prnt" value="submit">PRINT & SIMPAN</button>
               </div>
             </div>
 
@@ -271,15 +271,14 @@
       mywindow.document.write('</body></html>');
       $(divId, mywindow.document).removeClass('d-none');
       mywindow.onafterprint = function(){
-        return true;
+        ordr_save();
       };
 
       setTimeout(function(){
         mywindow.print();
         mywindow.close();
-      }, 600);
+      }, 1000);
     }
-    // TODO: check print succcess
 
     // button save order on click
     $('#save').click(function(){
@@ -291,8 +290,7 @@
     // button on save n print click
     $('#prnt').click(function(){
       if (chck_inpt()) {
-        ordr_prnt('mstr_invoice')
-        ordr_save();
+        ordr_prnt('mstr_invoice');
       }
     });
 

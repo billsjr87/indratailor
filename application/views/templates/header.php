@@ -19,6 +19,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
     <!-- <script src="<?php //echo base_url(); ?>assets/js/jsPDF.min.js"></script> -->
   </head>
-  <body>
+  <body style="position: relative;margin: 0;padding-bottom: 60px;min-height: 100%;">
     <div class="container-fluid">
       <div class="row">

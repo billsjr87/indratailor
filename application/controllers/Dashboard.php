@@ -5,6 +5,9 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
+		if ($this->session->userdata('username') == '') {
+			redirect(base_url().'uac');
+		}
 		$data = array(
 			'title' => 'Indra Tailor || IIS'
 		);

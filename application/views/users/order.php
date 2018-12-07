@@ -1,4 +1,4 @@
-<div class="col-10" style="margin-top:40px;">
+<div class="col-10 mb-4" style="margin-top:40px;">
   <div class="container">
     <h2>Daftar Pesanan</h2>
     <hr />

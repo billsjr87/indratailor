@@ -18,6 +18,9 @@ class Order extends CI_Controller {
 	}
 
 	public function index($message = NULL) {
+		if ($this->session->userdata('username') == '') {
+			redirect(base_url().'uac');
+		}
 		$orders = $this->m_order->getAllOrder();
 		$data = array(
 			'title' => 'Orders',
@@ -31,6 +34,9 @@ class Order extends CI_Controller {
 	}
 
 	public function ordr_addn() {
+		if ($this->session->userdata('username') == '') {
+			redirect(base_url().'uac');
+		}
 		$ordernum = $this->m_order->last_order_number();
 		if ($ordernum == '') {
 			$ordernum = "AA000001";
@@ -161,49 +167,5 @@ class Order extends CI_Controller {
 
 		echo json_encode($result);
 	}
-
-	//
-	// public function ordr_invoice($fileName){
-	// 	// $pdf = base64_decode($_POST['file']);
-	// 	if (!empty($_FILES['data'])) {
-	// 		$pdf = $_FILES['data']['tmp_name'];
-	// 		$upload_path = base_url() . "assets/images/invoices/";
-	// 		$target_file = $upload_path . $fileName . ".pdf";
-	// 		move_uploaded_file($pdf, $target_file);
-	// 		echo "scs";
-	// 	} else {
-	// 		echo 'no data sent';
-	// 	}
-	// 	// $config['upload_path']=base_url()."assets/images/invoices/";
-	// 	// $config['allowed_types']='pdf';
-	// 	// $config['encrypt_name'] = FALSE;
-	// 	// $this->load->library('upload',$config);
-	// 	// if($this->upload->do_upload('data')){
-	// 	// 	$data = array('upload_data' => $this->upload->data());
-	// 		// $judul= $this->input->post('judul');
-	// 		// $image= $data['upload_data']['file_name'];
-	// 		// $result= $this->m_upload->simpan_upload($judul,$image);
-	// 		// echo json_decode($result);
-	// 	// }
-	//
-	// 	// $config['upload_path'] = base_url()."assets/images/invoices/";
-	// 	// $config['allowed_types'] = 'pdf';
-	// 	// $config['file_name'] = $fileName.'.pdf';
-	// 	// $this->load->library('upload', $config);
-	// 	// $this->upload->initialize($config);
-	// 	// // if (!)  {
-	// 	// 	$this->upload->do_upload('blob');
-	// 	// 	$data = $this->upload->data();
-	// 	// 	// $this->files_model->insert_file($_FILES[][], $data['upload_path'].$data['file_name']);
-	// 	// 	echo $fileName;
-	// 	// } else {
-	// 	// 	echo "failed upload";
-	// 	// }
-	//
-	//
-	// 	// $target_file = $upload_path.basename($_FILES["pdf"]["name"]);
-	// 	// $file_name = $_FILES['pdf']['tmp_name'];
-	// 	// move_uploaded_file($file_name, $target_file);
-	// }
 
 }
