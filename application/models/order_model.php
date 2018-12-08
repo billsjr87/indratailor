@@ -15,6 +15,16 @@ class Order_model extends CI_Model {
     return $this->db->get('tb_orders');
   }
 
+  public function get_order($num) {
+    $this->db->select('tb_orders.*, tb_custs.*, tb_accrs.*');
+    $this->db->from('tb_orders');
+    $this->db->join('tb_custs', 'tb_custs.cust_indx = tb_orders.cust_indx', 'inner');
+    $this->db->join('tb_accrs', 'tb_accrs.ordr_nmbr = tb_orders.ordr_nmbr', 'inner');
+    $this->db->where('tb_orders.ordr_nmbr', $num);
+    $query = $this->db->get();
+    return $query->row();
+  }
+
   public function getAllOrder() {
     $this->db->select('tb_orders.*, tb_custs.*, tb_accrs.*');
     $this->db->from('tb_orders');

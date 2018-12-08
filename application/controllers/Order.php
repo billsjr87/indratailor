@@ -33,6 +33,28 @@ class Order extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function show_ordr($orderNumber) {
+		if ($this->session->userdata('username') == '') {
+			redirect(base_url().'uac');
+		}
+		$order = $this->m_order->get_order($orderNumber);
+		$payment = $this->m_pymt->get_total_payment($order->accr_nmbr);
+		$detailOrders = $this->m_detl->get_details($orderNumber);
+		$data = array(
+			'title' => $orderNumber,
+			'detail' => $order,
+			'ordr_nmbr' => $orderNumber,
+			'stor_prfl' => $this->stor_prfl,
+			'item_detail' => $detailOrders,
+			'payment' => $payment
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/nav');
+		$this->load->view('users/orders/view_order');
+		$this->load->view('templates/invoices');
+		$this->load->view('templates/footer');
+	}
+
 	public function ordr_addn() {
 		if ($this->session->userdata('username') == '') {
 			redirect(base_url().'uac');

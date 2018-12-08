@@ -32,6 +32,7 @@
 $(document).ready(function(){
 
   var orderList = <?php echo json_encode($list_order); ?>;
+  var baseUrl = window.location;
 
   function showTableData (dataForTable) {
     $('#order_list_body').empty();
@@ -40,7 +41,7 @@ $(document).ready(function(){
         '<td>'+dataForTable[i]['ordr_date'].split('-')[2]+'-'+dataForTable[i]['ordr_date'].split('-')[1]+'-'+dataForTable[i]['ordr_date'].split('-')[0]+'</td>'+
         '<td>'+dataForTable[i]['ordr_fndt'].split('-')[2]+'-'+dataForTable[i]['ordr_fndt'].split('-')[1]+'-'+dataForTable[i]['ordr_fndt'].split('-')[0]+'</td>'+
         '<td>'+(dataForTable[i]['accr_stat'] == 1 ? 'Lunas' : 'Belum Lunas')+'</td>'+
-        '<td><a role="button" href="#" class="btn btn-sm btn-outline-primary disabled"><i class="fas fa-file-invoice"></i> Nota</button></td></tr>');
+        '<td><a href="'+baseUrl+'/show_ordr/'+dataForTable[i]['ordr_nmbr']+'" role="button" class="btn btn-sm btn-outline-primary '+(dataForTable[i]['accr_stat'] == 1 ? 'disabled' : '')+'"><i class="fas fa-file-invoice"></i> Nota</a></td></tr>');
     }
   }
   // console.log(orderList);

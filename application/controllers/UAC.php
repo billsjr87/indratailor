@@ -27,7 +27,6 @@ class Uac extends CI_Controller {
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('login');
-		$this->load->view('templates/footer');
 	}
 
 	public function logout_attempt() {

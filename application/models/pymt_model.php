@@ -11,5 +11,16 @@ class Pymt_model extends CI_Model {
     return $this->db->insert_id();
   }
 
+  public function get_total_payment ($accrNumber) {
+    $this->db->select('*');
+    $this->db->from('tb_pymts');
+    $this->db->where('accr_nmbr', $accrNumber);
+    $query = $this->db->get();
+    $result = 0;
+    foreach ($query->result() as $row) {
+      $result += $row->pymt_amnt;
+    }
+    return $result;
+  }
 
 }

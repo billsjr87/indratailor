@@ -7,13 +7,6 @@
       </h6>
     </h1>
     <hr style="width:40%;" />
-    <!-- <button type="button" class="btn btn-outline-success"> -->
-    <!-- <a class="btn btn-success" role="button" href="<?php echo base_url('order/ordr_addn'); ?>">
-      <i class="fas fa-plus"></i> Pesanan Baru
-    </a> -->
-    <!-- <hr /> -->
-    <!-- </button> -->
-    <!-- <div class="table-responsive"> -->
     <div class="card" style="margin: 0 auto; float: none; margin-bottom: 10px;width:40%;">
       <div class="card-body">
         <form class="" action="<?php echo base_url() ?>uac/login_attempt" method="post">
@@ -39,3 +32,15 @@
     <!-- </div> -->
   </div>
 </div>
+<!-- footer -->
+</div>
+</div>
+<footer style="">
+<div class="container-fluid h-100 text-center">
+  <small class="mb-0 pt-3">
+    Copyright &copy; 2018 by Creative Lab. All Rights Reserved.
+  </small>
+</div>
+</footer>
+</body>
+</html>

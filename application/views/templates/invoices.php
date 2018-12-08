@@ -1,30 +1,38 @@
 <div class="table-responsive d-none" id="mstr_invoice">
-  <h1 class="text-center">
-    <?php echo $stor_prfl['stor_name']; ?>
-  </h1>
-  <h6 class="text-center">
-    <i>
-      <?php echo $stor_prfl['stor_addr']; ?>
-    </i>
-  </h6>
-  <h6 class="text-center">
-    <b style="font-size:0.8em;">
-      <?php echo $stor_prfl['stor_phnn']; ?>
-    </b>
-  </h6>
+  <div class="row">
+    <div class="col-2">
+      <img class="img-fluid pt-2 pb-2 px-auto ml-5" style="width:60%;" src="<?php echo base_url(); ?>assets/images/logo.jpeg" alt="logo">
+    </div>
+    <div class="col-6">
+      <h1>
+        <?php echo $stor_prfl['stor_name']; ?>
+      </h1>
+      <h6>
+        <i>
+          <?php echo $stor_prfl['stor_addr']; ?>
+        </i>
+      </h6>
+      <h6>
+        <b style="font-size:0.8em;">
+          <?php echo $stor_prfl['stor_phnn']; ?>
+        </b>
+      </h6>
+    </div>
+  </div>
+  <hr class="mb-1" />
   <table class="table border-top" style="margin-top:15px;">
     <thead>
       <tr>
         <td style="width: 12%;" class="border-0">
           No.Nota
         </td>
-        <th id="print_nonota" style="width: 60%;" class="border-0">
+        <th id="print_nonota" style="width: 50%;" class="border-0">
           <?php echo $ordr_nmbr; ?>
         </th>
-        <td style="width: 18%;" class="border-0">
+        <td style="width: 20%;" class="border-0">
           Tanggal
         </td>
-        <th id="print_tanggal" style="width: 10%;" class="border-0">
+        <th id="print_tanggal" style="width: 18%;" class="border-0">
 
         </th>
       </tr>
