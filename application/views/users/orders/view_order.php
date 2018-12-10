@@ -9,24 +9,6 @@
     <hr />
     <div class="card" id="printable_check" style="margin-bottom:50px;">
 
-      <!-- card header start -->
-      <!-- <div class="card-header">
-        <h1 class="text-center">
-          <?php // echo $stor_prfl['stor_name']; ?>
-        </h1>
-        <h6 class="text-center">
-          <i>
-            <?php // echo $stor_prfl['stor_addr']; ?>
-          </i>
-        </h6>
-        <h6 class="text-center">
-          <b style="font-size:0.8em;">
-            <?php // echo $stor_prfl['stor_phnn']; ?>
-          </b>
-        </h6>
-      </div> -->
-      <!-- card header end -->
-
       <!-- card body start -->
       <div class="card-body">
 
@@ -133,7 +115,7 @@
                 <label for="ordr_fees" style="font-size:0.8em;">Biaya</label>
               </div>
               <div class="col">
-                <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly required />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_fees" id="ordr_fees" min="0" value="0" readonly />
               </div>
             </div>
 
@@ -142,7 +124,7 @@
                 <label for="ordr_dopy" style="font-size:0.8em;">Bayar</label>
               </div>
               <div class="col">
-                <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" value="0" />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_dopy" id="ordr_dopy" min="0" step="1000" value="0" readonly />
               </div>
             </div>
 
@@ -151,17 +133,15 @@
                 <label for="ordr_accr" style="font-size:0.8em;">Sisa</label>
               </div>
               <div class="col">
-                <input style="text-align:right;" class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" placeholder="0" readonly required />
+                <input style="text-align:right;" class="form-control" type="number" name="ordr_accr" id="ordr_accr" min="0" placeholder="0" readonly />
               </div>
             </div>
-
-            <!-- <input style="display:none;" type="file" name="invoice" id="invoice" accept="application/pdf" /> -->
 
             <hr />
 
             <div class="row d-print-none">
               <div class="col-2 offset-8">
-                <button class="btn btn-success w-100" type="button" name="paid" id="paid" data-toggle="modal" data-target="#paid_modl">
+                <button class="btn btn-success w-100 <?php echo $detail->accr_stat == 1 ? 'disabled': '' ; ?>" type="button" name="paid" id="paid" data-toggle="modal" data-target="#paid_modl">
                   BAYAR
                 </button>
               </div>
@@ -184,7 +164,7 @@
 
 <!-- modal start -->
 <div class="modal fade" id="paid_modl" tabindex="-1" role="dialog" aria-labelledby="paid_modl_titl" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header bg-dark text-white">
         <h5 class="modal-title" id="paid_modl_titl">Pembayaran</h5>
@@ -196,30 +176,32 @@
 
         <form name="payment_process" id="payment_process">
 
+          <input type="hidden" name="order_number" value="<?php echo $detail->ordr_nmbr; ?>">
+
           <div class="row" style="margin-bottom:10px;">
-            <div class="col-1">
+            <div class="col-2">
               <label for="fee" style="font-size:0.8em;">Biaya</label>
             </div>
-            <div class="col-2" style="padding-right:0px;">
-              <input type="number" class="form-control" min="0" name="fee" value="<?php echo $detail->accr_amnt; ?>" readonly />
+            <div class="col-3" style="padding-right:0px;">
+              <input type="number" class="form-control" min="0" name="fee" id="fee" value="<?php echo $detail->accr_amnt; ?>" readonly />
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-1">
+          <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
               <label for="paid_done" style="font-size:0.8em;">Terbayar</label>
             </div>
-            <div class="col">
-              <input class="form-control" type="number" name="paid_done" value="<?php echo $payment; ?>" readonly />
+            <div class="col-3" style="padding-right:0px;">
+              <input class="form-control" type="number" name="paid_done" id="paid_done" value="<?php echo $payment; ?>" readonly />
               <!-- <small class="text-danger" id="error_cust_name"></small> -->
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-1">
+          <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
               <label for="addu_pymt" style="font-size:0.8em;">Pembayaran</label>
             </div>
-            <div class="col-6">
+            <div class="col-3" style="padding-right:0px;">
               <input class="form-control" type="number" name="addu_pymt" id="addu_pymt" value="0" min="0" required />
               <small class="text-danger" id="error_addu_pymt"></small>
             </div>
@@ -309,26 +291,30 @@
 
     $('#save_pymt').on('click', function() {
       var pembayaran = $('#addu_pymt').val();
-      $.ajax({
-        url:"<?php echo base_url('order/addu_pymt'); ?>",
-        method:"POST",
-        data:$('#payment_process').serialize(),
-        success:function(dt)
-        {
-          var data = JSON.parse(dt);
-          if (!data.msg) {
-            alert('Phone number exist.');
-          } else {
-            var nmcs = $('#addn_csnm').val();
-            alert(nmcs+"-"+data.msg);
-            alert('Data saved.');
-            $('#cust_indx').val(data.msg);
-            $('#cust_name').val(nmcs);
-            $('#print_nama').text(nmcs);
-            $('#clos_cust').click();
+      var biayaaaa = $('#fee').val();
+      var sudahBayar = $('#paid_done').val();
+      var sisaBisaBayar = biayaaaa - sudahBayar;
+      if (pembayaran > sisaBisaBayar) {
+        alert('Maksimal pembayaran '+sisaBisaBayar);
+      } else {
+        $.ajax({
+          url:"<?php echo base_url('order/addu_pymt'); ?>",
+          method:"POST",
+          data:$('#payment_process').serialize(),
+          success:function(dt)
+          {
+            // console.log(dt);
+            var data = JSON.parse(dt);
+            if (data.url == "") {
+              alert(data.msg);
+            } else {
+              alert(data.msg);
+              window.location.href = "<?php echo base_url(); ?>" + data.url + "";
+              $('#clos_pymt').click();
+            }
           }
-        }
-      });
+        });
+      }
     });
 
   });

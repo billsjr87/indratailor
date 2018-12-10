@@ -33,6 +33,32 @@ class Order extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function addu_pymt() {
+		$result['msg'] = "";
+		$result['url'] = "";
+
+		$orderNum = $this->input->post("order_number");
+		$accr_nmbr = $this->m_ar->get_account_number($orderNum);
+		$payment = $this->input->post("addu_pymt");
+		date_default_timezone_set('Asia/Jakarta');
+		$trax_date = date('Y-m-d H:i:s');
+		$insertData = array(
+			'accr_nmbr' => $accr_nmbr->accr_nmbr,
+			'pymt_date' => $trax_date,
+			'pymt_amnt' => $payment
+		);
+		$res = $this->m_pymt->add_pymt($insertData);
+		if ($res != 0) {
+			$result['msg'] = "Pembayaran disimpan.";
+			$result['url'] = "order/show_ordr/".$orderNum;
+		} else {
+			$result['msg'] = "Pembayaran gagal disimpan.";
+			$result['url'] = "";
+		}
+		// $result['msg'] = $res;
+		echo json_encode($result);
+	}
+
 	public function show_ordr($orderNumber) {
 		if ($this->session->userdata('username') == '') {
 			redirect(base_url().'uac');

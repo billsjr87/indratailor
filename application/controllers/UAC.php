@@ -14,7 +14,7 @@ class Uac extends CI_Controller {
 			$this->login();
 		} else {
 			if ($this->session->userdata('access_control') == 1) {
-				redirect(base_url().'dashboard');
+				redirect(base_url().'order');
 			} else {
 				redirect(base_url().'order');
 			}
