@@ -3,8 +3,8 @@
       <img class="img-fluid img-thumbnail" src="<?php echo base_url(); ?>assets/images/logo.jpeg" alt="logo">
     </div>
     <div class="title text-right">INDRA TAILOR</div>
-    <a class="btn disabled text-right" role="button" href="<?php echo base_url('home'); ?>"><i class="fas fa-tachometer-alt"></i> Beranda</a>
-    <a class="btn text-right" role="button" href="<?php echo base_url('order'); ?>"><i class="fas fa-book-open"></i> Pesanan</a>
-    <a class="btn disabled text-right" role="button" href="#"><i class="fas fa-tape"></i> Ukuran</a>
-    <a class="btn text-right" role="button" href="<?php echo base_url('uac/logout_attempt'); ?>"><i class="fas fa-power-off"></i> Keluar</a>
+    <a class="btn disabled text-right" role="button" href="<?php echo base_url('home'); ?>">Beranda <i class="fas fa-tachometer-alt"></i></a>
+    <a class="btn text-right" role="button" href="<?php echo base_url('order'); ?>">Pesanan <i class="fas fa-book-open"></i></a>
+    <a class="btn text-right" role="button" href="<?php echo base_url('customer'); ?>">Pelanggan <i class="fas fa-users"></i></a>
+    <a class="btn text-right" role="button" href="<?php echo base_url('uac/logout_attempt'); ?>">Keluar <i class="fas fa-power-off"></i></a>
 </div>
