@@ -6,6 +6,7 @@ class Customer extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('cust_model','m_cust');
+		$this->load->model('measure_model','m_mssr');
 
 	}
 
@@ -15,9 +16,11 @@ class Customer extends CI_Controller {
 			redirect(base_url().'uac');
 		}
 		$customerList = $this->m_cust->read_all();
+		$measureList = $this->m_mssr->getAllMeasure();
 		$data = array(
 			'title' => 'Indra Tailor || IIS',
-			'customerList' => $customerList
+			'customerList' => $customerList,
+			'measureList' => $measureList
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav');

@@ -108,16 +108,23 @@
 $(document).ready(function(){
 
   var customerList = <?php echo json_encode($customerList); ?>;
+  var measureList = <?php echo json_encode($measureList); ?>;
   var baseUrl = window.location;
 
   function showTableData (dataForTable) {
     $('#customer_list_body').empty();
     for (var i = 0; i < dataForTable.length; i++) {
+      var categoryList = [];
+      for (var j = 0; j < measureList.length; j++) {
+        if (measureList[j]['cust_indx'] == dataForTable[i]['cust_indx']) {
+          categoryList.push(measureList[j]['cate_indx']);
+        }
+      }
       $('#customer_list_body').append('<tr id="cust_'+dataForTable[i]['cust_indx']+'"><td>'+
         (dataForTable[i]['cust_titl'] == 1 ? 'Mr.' : 'Ms.')+'</td><td>'+dataForTable[i]['cust_name']+'</td>'+
         '<td>'+dataForTable[i]['cust_phnn']+'</td>'+
         '<td>'+dataForTable[i]['cust_addr']+'</td>'+
-        '<td>'+'for size'+'</td>'+
+        '<td>'+dataForTable[i]['cust_indx']+'</td>'+
         '<td><a href="'+baseUrl+'/show_cust/'+dataForTable[i]['cust_indx']+'" role="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i> Edit</a></td></tr>');
     }
   }
