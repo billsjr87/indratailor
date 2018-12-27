@@ -19,7 +19,7 @@ class Measure_model extends CI_Model {
         'mssr_indx' => $row->mssr_indx,
         'cust_indx' => $row->cust_indx,
         'cate_indx' => $row->cate_indx,
-        'msssr_size' => $row->mssr_size,
+        'mssr_size' => $row->mssr_size,
         'mssr_date' => $row->mssr_date
       ));
     }

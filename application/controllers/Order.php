@@ -39,15 +39,20 @@ class Order extends CI_Controller {
 
 		$orderNum = $this->input->post("order_number");
 		$accr_nmbr = $this->m_ar->get_account_number($orderNum);
+		$total_fee = $this->m_ar->get_account_ammount($orderNum);
 		$payment = $this->input->post("addu_pymt");
 		date_default_timezone_set('Asia/Jakarta');
 		$trax_date = date('Y-m-d H:i:s');
 		$insertData = array(
-			'accr_nmbr' => $accr_nmbr->accr_nmbr,
+			'accr_nmbr' => $accr_nmbr,
 			'pymt_date' => $trax_date,
 			'pymt_amnt' => $payment
 		);
 		$res = $this->m_pymt->add_pymt($insertData);
+		$total_payment = $this->m_pymt->get_total_payment($accr_nmbr);
+		if ($total_payment == $total_fee) {
+			$update = $this->m_ar->update_status($orderNum);
+		}
 		if ($res != 0) {
 			$result['msg'] = "Pembayaran disimpan.";
 			$result['url'] = "order/show_ordr/".$orderNum;

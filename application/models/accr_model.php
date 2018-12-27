@@ -16,7 +16,23 @@ class Accr_model extends CI_Model {
     $this->db->from('tb_accrs');
     $this->db->where('ordr_nmbr', $order_number);
     $query = $this->db->get();
-    return $query->row();
+    $ret = $query->row()->accr_nmbr;
+    return $ret;
   }
 
+  public function get_account_ammount ($order_number) {
+    $this->db->select('accr_amnt');
+    $this->db->from('tb_accrs');
+    $this->db->where('ordr_nmbr', $order_number);
+    $query = $this->db->get();
+    $ret = $query->row()->accr_amnt;
+    return $ret;
+  }
+
+  public function update_status($order_number) {
+    $this->db->set('accr_stat', 1);
+    $this->db->where('ordr_nmbr', $order_number);
+    $this->db->update('tb_accrs');
+    return $this->db->affected_rows();
+  }
 }
